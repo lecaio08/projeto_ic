@@ -4,6 +4,7 @@ const int buttonLeft = 2;
 const int buttonDown = 5;
 const int buttonRight = 4;
 const int buttonShoot = 6;
+int opcaoJogo = 0;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -20,38 +21,33 @@ void setup() {
   lcd.clear();
   lcd.backlight();
   lcd.setCursor(0, 0);
-  lcd.print("Hello, Tinkercad!");
+  lcd.print("Aperte o Botao para selecionar um jogo!");
 }
 
 void loop() {
-  if(digitalRead(buttonUp) == LOW){
-    lcd.clear();
-    delay(200);
-    lcd.print("botao up");
-  }
   if(digitalRead(buttonLeft) == LOW){
-        lcd.clear();
+	opcaoJogo = opcaoJogo - 1;
 
-  delay(200);
-        lcd.print("botao left");
   }
-  if(digitalRead(buttonRight) == LOW){
-        lcd.clear();
-
-    delay(200);
-        lcd.print("botao deretcha");
+  else if(digitalRead(buttonRight) == LOW){
+  opcaoJogo = opcaoJogo + 1;
   }
-  if (digitalRead(buttonDown) == LOW){
-        lcd.clear();
-
-  delay(200);
-        lcd.print("botao bajo");
+  if(opcaoJogo<1){
+  opcaoJogo = 3;
   }
-  if (digitalRead(buttonShoot) == LOW){
-        lcd.clear();
-
-	delay(200);
-    lcd.print("botxao tiro");
+  else if(opcaoJogo>3){
+  opcaoJogo = 1;
+  }
+  if(opcaoJogo==1){
+    lcd.clear();
+    lcd.print("Pong");
+  }
+  else if(opcaoJogo==2){
+    lcd.clear();
+    lcd.print("Pac-Man");
+  }
+  else if(opcaoJogo==3){
+  lcd.clear();
+    lcd.print("Jogo da Cobrinha");
   }
 }	
-//codigo superbasico so para checar a ligacao dos botoes com o lcd
