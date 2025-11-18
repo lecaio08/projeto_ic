@@ -1,1 +1,57 @@
-a
+#include <LiquidCrystal_I2C.h>
+const int buttonUp = 3;
+const int buttonLeft = 2;
+const int buttonDown = 5;
+const int buttonRight = 4;
+const int buttonShoot = 6;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+    pinMode(buttonUp, INPUT_PULLUP);
+    pinMode(buttonLeft, INPUT_PULLUP);
+    pinMode(buttonRight, INPUT_PULLUP);
+    pinMode(buttonDown, INPUT_PULLUP);
+    pinMode(buttonShoot, INPUT_PULLUP);
+ 
+  Serial.begin(9600);
+  lcd.init();
+  delay(100);
+  lcd.clear();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Hello, Tinkercad!");
+}
+
+void loop() {
+  if(digitalRead(buttonUp) == LOW){
+    lcd.clear();
+    delay(200);
+    lcd.print("botao up");
+  }
+  if(digitalRead(buttonLeft) == LOW){
+        lcd.clear();
+
+  delay(200);
+        lcd.print("botao left");
+  }
+  if(digitalRead(buttonRight) == LOW){
+        lcd.clear();
+
+    delay(200);
+        lcd.print("botao deretcha");
+  }
+  if (digitalRead(buttonDown) == LOW){
+        lcd.clear();
+
+  delay(200);
+        lcd.print("botao bajo");
+  }
+  if (digitalRead(buttonShoot) == LOW){
+        lcd.clear();
+
+	delay(200);
+    lcd.print("botxao tiro");
+  }
+}	
+//codigo superbasico so para checar a ligacao dos botoes com o lcd
