@@ -1,18 +1,28 @@
-# projeto IC: réplica de Pac-Man utilizando Arduino
+# projeto IC: gameboy: snake + pong
 
 ## descrição do projeto
-- o projeto consiste em simular o clássico jogo Pac-Man utilizando o hardware do arduino integrado com um display de LCD, joystick e leds, além das bibliotecas que a Arduino IDE disponibiliza para o desenvolvimento.
-- motivo por trás da ideia do projeto vem da possibilidade de recriar um dos pioneiros no mundo dos videogames utilizando hardware barato e software open-source, o que revela o grande potencial que há na combinação desses elementos.
+- o projeto consiste em simular um gameboy, contemplando os classicos jogos snake e pong.
 
 ## materiais e peças Necessárias
-- Carcaça feita com impressão 3D (estilo Game Boy)
+- arduino nano
+- display lcd 4x20
+- 5 botoes
+- carcaça feita com impressão 3D (estilo classico Game Boy)
 
-## referências Utilizadas
-- https://discussions.unity.com/t/pac-man-classic-game-design-document/756874
+## referências
 - https://docs.arduino.cc/learn/electronics/lcd-displays/
-- https://github.com/manjit-baishya-datascience/PAC-MAN-on-Arduino-and-16x2-LCD/
+- https://www.tinkercad.com/embed/eDkVy5IyndO?editbtn=1
+- https://pt.wikipedia.org/wiki/M%C3%A1quina_de_estados_finita
+- https://www.youtube.com/watch?v=KGnOF_G8m-U
+- https://www.instructables.com/How-to-Make-Snake-Game-Using-Arduino-Uno-Lcd-Ardui/
+- https://github.com/SadaleNet/Arduino1602Snake
+- https://www.thingiverse.com/thing:1159729
 
 <br>
 <p align="center">
-  <img src="https://media1.tenor.com/m/llSAvv3PxdAAAAAC/pacman-namco.gif"/>
+  <img src="https://media.discordapp.net/attachments/763769093605031987/1442929180806217830/IMG-20251125-WA0028.jpg?ex=69273805&is=6925e685&hm=de5de1a01fcf53e409627d6f1a051e32240ab918312beeab7692808dd09613eb&=&format=webp&width=1167&height=875"/>
+</p>
+<br>
+<p align="center">
+  <img src="https://cdn.discordapp.com/attachments/763769093605031987/1442929462839742564/IMG-20251125-WA0027.jpg?ex=69273848&is=6925e6c8&hm=a5298165cb5d8fb8e078a75e1974c309a423084218ffb4570808dc6e3bbeb48c"/>
 </p>
