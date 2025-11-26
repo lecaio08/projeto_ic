@@ -8,6 +8,54 @@ int opcaoJogo = 0;
 int ultimaOpcao = -1;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+int escolherJogo() {
+    int opcao = 1;
+    int ultima = -1;
+
+    while (true) {
+        if (digitalRead(buttonUpperLeft) == LOW) {
+            opcao--;
+            if (opcao < 1) opcao = 2;
+            delay(200);
+        }
+
+        if (digitalRead(buttonUpperRight) == LOW) {
+            opcao++;
+            if (opcao > 2) opcao = 1;
+            delay(200);
+        }
+
+        if (opcao != ultima) {
+            lcd.clear();
+            lcd.setCursor(0,0);
+
+            if (opcao == 1) lcd.print("Pong");
+            if (opcao == 2) lcd.print("Snake");
+
+            lcd.setCursor(0,1);
+            lcd.print("Press START");
+
+            ultima = opcao;
+        }
+
+        if (digitalRead(buttonSelect) == LOW) {
+            delay(200);
+            return opcao;
+        }
+    }
+}
+void jogo1() {
+    lcd.clear();
+    lcd.print("Iniciou Pong!");
+    delay(1000);
+}
+
+void jogo2() {
+    lcd.clear();
+    lcd.print("Iniciou Snake!");
+    delay(1000);
+}
+
 
 void setup() {
     pinMode(buttonLowerLeft, INPUT_PULLUP);
@@ -25,34 +73,10 @@ void setup() {
 }
 
 void loop() {
-  if(digitalRead(buttonUpperLeft) == LOW){
-    opcaoJogo--;
-    delay(200);
-  }
-  else if(digitalRead(buttonUpperRight) == LOW){
-    opcaoJogo++;
-    delay(200);
-  }
+  int jogo = escolherJogo();  // <-- CHAMA O MENU
 
-  if(opcaoJogo < 1) opcaoJogo = 2;
-  if(opcaoJogo > 2) opcaoJogo = 1;
+    if (jogo == 1) jogo1();
+    if (jogo == 2) jogo2();
 
-  if (opcaoJogo != ultimaOpcao) {
-    lcd.clear();  
-    lcd.setCursor(0,0);
-
-    if(opcaoJogo == 1){ 
-      lcd.print("Pong: 2 Players");
-      lcd.setCursor(0, 1);
-lcd.print("Press Start");
-    }
-    else if(opcaoJogo == 2) {
-      
-      lcd.print("Snake: 1 Player");
-     lcd.setCursor(0, 1);
-lcd.print("Press Start");
-    }
-
-    ultimaOpcao = opcaoJogo;  
-  }
+    delay(2000);
 }
