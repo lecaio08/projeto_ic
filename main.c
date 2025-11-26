@@ -1,19 +1,20 @@
 #include <LiquidCrystal_I2C.h>
-const int buttonUp = 3;
-const int buttonLeft = 2;
-const int buttonDown = 5;
-const int buttonRight = 4;
-const int buttonShoot = 6;
+const int buttonLowerRight= 2;
+const int buttonUpperRight = 3;
+const int buttonLowerLeft = 4;
+const int buttonUpperLeft = 5;
+const int buttonSelect = 6;
 int opcaoJogo = 0;
+int ultimaOpcao = -1;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
-    pinMode(buttonUp, INPUT_PULLUP);
-    pinMode(buttonLeft, INPUT_PULLUP);
-    pinMode(buttonRight, INPUT_PULLUP);
-    pinMode(buttonDown, INPUT_PULLUP);
-    pinMode(buttonShoot, INPUT_PULLUP);
+    pinMode(buttonLowerLeft, INPUT_PULLUP);
+    pinMode(buttonUpperRight, INPUT_PULLUP);
+    pinMode(buttonLowerLeft, INPUT_PULLUP);
+    pinMode(buttonUpperLeft, INPUT_PULLUP);
+    pinMode(buttonSelect, INPUT_PULLUP);
  
   Serial.begin(9600);
   lcd.init();
@@ -21,33 +22,37 @@ void setup() {
   lcd.clear();
   lcd.backlight();
   lcd.setCursor(0, 0);
-  lcd.print("Aperte o Botao para selecionar um jogo!");
 }
 
 void loop() {
-  if(digitalRead(buttonLeft) == LOW){
-	opcaoJogo = opcaoJogo - 1;
+  if(digitalRead(buttonUpperLeft) == LOW){
+    opcaoJogo--;
+    delay(200);
+  }
+  else if(digitalRead(buttonUpperRight) == LOW){
+    opcaoJogo++;
+    delay(200);
+  }
 
+  if(opcaoJogo < 1) opcaoJogo = 2;
+  if(opcaoJogo > 2) opcaoJogo = 1;
+
+  if (opcaoJogo != ultimaOpcao) {
+    lcd.clear();  
+    lcd.setCursor(0,0);
+
+    if(opcaoJogo == 1){ 
+      lcd.print("Pong: 2 Players");
+      lcd.setCursor(0, 1);
+lcd.print("Press Start");
+    }
+    else if(opcaoJogo == 2) {
+      
+      lcd.print("Snake: 1 Player");
+     lcd.setCursor(0, 1);
+lcd.print("Press Start");
+    }
+
+    ultimaOpcao = opcaoJogo;  
   }
-  else if(digitalRead(buttonRight) == LOW){
-  opcaoJogo = opcaoJogo + 1;
-  }
-  if(opcaoJogo<1){
-  opcaoJogo = 3;
-  }
-  else if(opcaoJogo>3){
-  opcaoJogo = 1;
-  }
-  if(opcaoJogo==1){
-    lcd.clear();
-    lcd.print("Pong");
-  }
-  else if(opcaoJogo==2){
-    lcd.clear();
-    lcd.print("Pac-Man");
-  }
-  else if(opcaoJogo==3){
-  lcd.clear();
-    lcd.print("Jogo da Cobrinha");
-  }
-}	
+}
