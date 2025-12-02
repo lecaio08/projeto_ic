@@ -270,7 +270,7 @@ void newFoodSnake() {
 
 void resetSnake() {
   lenSnake = 4;
-  dirSnake = 2;
+  dirSnake = 1;
 
   snake[0]={3,1};
   snake[1]={2,1};
@@ -314,7 +314,7 @@ void snake_game() {
   resetSnake();
 
   unsigned long last = millis();
-  unsigned long speed = 140;
+  unsigned long speed = 200;
 
   while (true) {
 
