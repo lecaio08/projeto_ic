@@ -1,13 +1,13 @@
-# projeto IC: gameboy: snake + pong
+# projeto IC
 
 ## descrição do projeto
-- o projeto consiste em simular um gameboy, contemplando os classicos jogos snake e pong.
+- o projeto consiste em simular um videogame simples, contemplando os classicos jogos snake, pong e car race
 
 ## materiais e peças Necessárias
 - arduino nano
-- display lcd 4x20
+- display lcd 2x16
 - 5 botoes
-- carcaça feita com impressão 3D (estilo classico Game Boy)
+- carcaça feita com cortes em acrílico
 
 ## referências
 - https://docs.arduino.cc/learn/electronics/lcd-displays/
@@ -18,12 +18,3 @@
 - https://github.com/SadaleNet/Arduino1602Snake
 - https://www.thingiverse.com/thing:1159729
 - https://www.tinkercad.com/things/khcTU5tyzOr-gameboy
-
-<br>
-<p align="center">
-  <img src="https://media.discordapp.net/attachments/763769093605031987/1442929180806217830/IMG-20251125-WA0028.jpg?ex=69273805&is=6925e685&hm=de5de1a01fcf53e409627d6f1a051e32240ab918312beeab7692808dd09613eb&=&format=webp&width=1167&height=875"/>
-</p>
-<br>
-<p align="center">
-  <img src="https://cdn.discordapp.com/attachments/763769093605031987/1442929462839742564/IMG-20251125-WA0027.jpg?ex=69273848&is=6925e6c8&hm=a5298165cb5d8fb8e078a75e1974c309a423084218ffb4570808dc6e3bbeb48c"/>
-</p>
