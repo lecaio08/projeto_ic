@@ -1,13 +1,13 @@
-# projeto IC: gameboy: snake + pong
+# projeto IC: gameboy: snake + pong + car
 
 ## descrição do projeto
-- o projeto consiste em simular um gameboy, contemplando os classicos jogos snake e pong.
+- o projeto consiste em simular um gameboy, contemplando os classicos jogos car, snake e pong.
 
 ## materiais e peças Necessárias
-- arduino nano
-- display lcd 4x20
+- arduino mega 2560
+- display lcd 16x2
 - 5 botoes
-- carcaça feita com impressão 3D (estilo classico Game Boy)
+- carcaça feita com acrílico (estilo classico Game Boy)
 
 ## referências
 - https://docs.arduino.cc/learn/electronics/lcd-displays/
