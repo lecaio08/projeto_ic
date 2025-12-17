@@ -185,7 +185,7 @@ int escolherJogo() {
       if (opcao == 3) lcd.print("CAR GAME");
 
       lcd.setCursor(2,1);
-      lcd.print("PRESS START");
+      lcd.print("PRESS START!");
 
       ultima = opcao;
     }
@@ -197,7 +197,6 @@ int escolherJogo() {
   }
 }
 
-
 void pong_game() {
 
   const uint8_t W = 16;
@@ -206,53 +205,52 @@ void pong_game() {
   /*
     - glyphs:
         - utilizamos a implementação de blocos gráficos
-        - como não conseguimos identificar a posição do pixel individualmente, criamos a combinação de caracteres que representam o estado do pixel(ligado/desligado)
+        - como não conseguimos identificar a posição do pixel individualmente, criamos a combinação de caracteres que representam o estado do pixel (ligado/desligado)
   */ 
+
   byte block3[3] = { B01110, B01110, B01110 };
   byte glyph[8][8];
 
   for (uint8_t i = 0; i < 8; i++) {
+
     memset(glyph[i], 0, 8);
     int up = (i+1)/3;
     int lo = (i+1)%3;
-
 
     if (up == 1) memcpy(&glyph[i][0], block3, 3);
     if (lo == 1) memcpy(&glyph[i][4], block3, 3);
 
     lcd.createChar(i, glyph[i]);
+
   }
 
   /*
     - posição das variáveis:
         - leftY, rightY: posição das raquetes
         - ballX, ballY: posição das bolas
-
     - direção da bola(dx, dy): 1 = direita/baixo, -1 = esquerda/cima
   
   */
+
   int leftY  = 1;
   int rightY = 1;
   int ballX  = 8;
   int ballY  = 1;
-  int dx = 1;
-  int dy = 1;
+  int dx     = 1;
+  int dy     = 1;
 
-  /*
-    - limite das raquetes
-  */
+  
+  // limite das raquetes
+
   const int LEFT_LIMIT  = 3;
   const int RIGHT_LIMIT = 12;
+  const int P1X         = LEFT_LIMIT;
+  const int P2X         = RIGHT_LIMIT;
 
-  const int P1X = LEFT_LIMIT;
-  const int P2X = RIGHT_LIMIT;
+  // FPS (frame por segundo) do jogo => 35 em ms(milisegundos)
 
-  /*
-    - FPS(frame por segundo) do jogo
-        - 35 em ms(milisegundos)
-  */
   const unsigned long PHYS_INTERVAL = 35;
-  unsigned long lastFrame = millis();
+  unsigned long lastFrame           = millis();
 
   lcd.clear();
   lcd.setCursor(3,0); lcd.print("PONG 16x4");
@@ -261,88 +259,63 @@ void pong_game() {
   while (digitalRead(buttonSelect) != LOW);
   delay(200);
 
-  /*
-    - loop principal do PONG
-  */
+  
+// loop principal do PONG
   while (true) {
 
-    /*
-        - se apertar o botão do meio, sai do jogo
-    */
-    if (digitalRead(buttonSelect) == LOW) { delay(200); return; }
-
-    /*
-        - lógica de controle das raquetes
-    */
+    // se apertar o botão do meio, sai do jogo
+    if (digitalRead(buttonSelect) == LOW) { delay(200); return; }    
+    // lógica de controle das raquetes
     if (digitalRead(buttonUpperLeft) == LOW && leftY > 0) leftY--;
     if (digitalRead(buttonLowerLeft) == LOW && leftY < 2) leftY++;
 
     if (digitalRead(buttonUpperRight) == LOW && rightY > 0) rightY--;
     if (digitalRead(buttonLowerRight) == LOW && rightY < 2) rightY++;
 
-    /*
-        - lógica da física da bola
-    */
+    // lógica da física da bola
     if (millis() - lastFrame >= PHYS_INTERVAL) {
       lastFrame = millis();
-        
-      /*
-        - movimentação da bola pelo eixo x e y
-      */
+      // movimentação da bola pelo eixo x e y
       ballX += dx;
       ballY += dy;
-
-      /*
-        - colisão com teto e chão
-      */
+      // colisão com teto e chão
       if (ballY < 0) { ballY = 0; dy = 1; }
       if (ballY > 3) { ballY = 3; dy = -1; }
-
-      /*
-        - colisão com as raquetes
-      */
+      // colisão com as raquetes
       if (ballX == P1X+1) {
-        if (ballY == leftY)     { dx = 1; dy = -1; }
-        else if (ballY == leftY+1) { dx = 1; dy = 1; }
+        if (ballY == leftY)        { dx = 1; dy = -1; }
+        else if (ballY == leftY+1) { dx = 1; dy = 1;  }
       }
 
       if (ballX == P2X-1) {
-        if (ballY == rightY)     { dx = -1; dy = -1; }
-        else if (ballY == rightY+1) { dx = -1; dy = 1; }
+        if (ballY == rightY)        { dx = -1; dy = -1; }
+        else if (ballY == rightY+1) { dx = -1; dy = 1;  }
       }
     
-      /*
-        - refresh do jogo depois do ponto
-      */
+      // refresh do jogo depois do ponto
       if (ballX < LEFT_LIMIT || ballX > RIGHT_LIMIT) {
         lcd.clear();
         lcd.setCursor(4,0); lcd.print("POINT!");
         delay(500);
-
-        /*
-            - reseta a bola no meio
-            - escolhe a direção aleatória
-        */
-        ballX = 8; ballY = 1;
-        dx = (random(0,2)==0)?1:-1;
-        dy = (random(0,2)==0)?1:-1;
+        // reseta a bola no meio e escolhe a direção aleatória
+        ballX = 8; 
+        ballY = 1;
+        dx    = (random(0,2)==0)?1:-1;
+        dy    = (random(0,2)==0)?1:-1;
       }
     }
 
-    /*
-        - chamando as funções para a renderização do jogo
-    */
+    // chamando as funções para a renderização do jogo
     gClearPong();
     gAddPong(P1X, leftY, 1);
     gAddPong(P1X, leftY+1, 1);
-
     gAddPong(P2X, rightY, 1);
     gAddPong(P2X, rightY+1, 1);
-
     gAddPong(ballX, ballY, 1);
-
     gFlushPong();
+
   }
+
 }
 
 struct Pos { uint8_t x,y; };
@@ -352,29 +325,34 @@ int dirSnake;
 Pos foodSnake;
 
 void newFoodSnake() {
+
   const uint8_t W = 16;
   const uint8_t H = 4;
 
   while (true) {
-    bool ok=true;
+    
+    bool ok = true;
     foodSnake.x = random(0,W);
     foodSnake.y = random(0,H);
     for (int i=0;i<lenSnake;i++)
       if (snake[i].x==foodSnake.x && snake[i].y==foodSnake.y) ok=false;
     if (ok) return;
+  
   }
+
 }
 
 void resetSnake() {
+  
   lenSnake = 4;
   dirSnake = 1;
-
-  snake[0]={3,1};
-  snake[1]={2,1};
-  snake[2]={1,1};
-  snake[3]={0,1};
+  snake[0] = {3,1};
+  snake[1] = {2,1};
+  snake[2] = {1,1};
+  snake[3] = {0,1};
 
   newFoodSnake();
+
 }
 
 void snake_game() {
@@ -382,16 +360,11 @@ void snake_game() {
   const uint8_t W = 16;
   const uint8_t H = 4;
 
-  /*
-    - define o modelo da cobra
-    - define o modelo da maçã
-  */
+  // define o modelo da cobra e o modelo da maçã
   byte block[3] = { B01110, B01110, B01110 };
   byte apple[3] = { B00100, B01010, B00100 };
 
-  /*
-    - configura o mapa 
-  */
+  // configura o mapa 
   for (uint8_t i=0;i<8;i++){
     byte g[8];
     memset(g,0,8);
@@ -410,6 +383,7 @@ void snake_game() {
     if (lo==2) memcpy(&g[4], apple, 3);
 
     lcd.createChar(i, g);
+
   }
 
   lcd.clear();
@@ -419,32 +393,28 @@ void snake_game() {
   while (digitalRead(buttonSelect)!=LOW);
   delay(200);
 
-  /*
-    - loop para possiblitar a rejogabilidade, mesmo se você perder
-  */
+  // loop para possiblitar a rejogabilidade, mesmo se você perder
+
   while(true) {
 
     resetSnake();
 
-    unsigned long last = millis();
+    unsigned long last  = millis();
     unsigned long speed = 200;
-    bool morreu = false;
+    bool morreu         = false;
 
-    /*
-      - loop principal do SNAKE
-    */
+    // loop principal do SNAKE
+    
     while (true) {
 
       if (digitalRead(buttonSelect) == LOW) { delay(200); return; }
 
-      /*
-          - define os controles
-      */
+      // define os controles
       if (digitalRead(buttonUpperLeft)==LOW)  dirSnake = (dirSnake+3)%4;
       if (digitalRead(buttonUpperRight)==LOW) dirSnake = (dirSnake+1)%4;
 
       if (millis()-last >= speed) {
-        last=millis();
+        last = millis();
 
         /*
           - aqui, cada pedaço na movimentação vai assumir o lugar do pedaço da frente
@@ -463,16 +433,18 @@ void snake_game() {
         /*
           - colisões:
               - if (snake[0].x>=W || snake[0].y>=H) { morreu = true; break; }
-                if (snake[0].x<0  || snake[0].y<0) { morreu = true; break; }
+                if (snake[0].x<0  || snake[0].y<0)  { morreu = true; break; }
                   - verifica se saiu do mapa
               - for (int i=1;i<lenSnake;i++)
                   if (snake[0].x==snake[i].x && snake[0].y==snake[i].y) { morreu = true; break; }
                   - verifica se bateu no próprio corpo
         */
+
         if (snake[0].x>=W || snake[0].y>=H) {
           morreu = true;
           break;
         }
+
         if (snake[0].x<0  || snake[0].y<0) {
           morreu = true;
           break; 
@@ -492,7 +464,8 @@ void snake_game() {
                   - aumenta a velocidade
               - newFoodSnake():
                   - adiciona mais uma maçã no mapa
-        */  
+        */
+
         if (snake[0].x==foodSnake.x && snake[0].y==foodSnake.y) {
           lenSnake++;
           if (speed>60) speed-=8;
@@ -506,6 +479,7 @@ void snake_game() {
               - gAddSnake(foodSnake.x,foodSnake.y,2):
                   - desenha a maçã
         */
+
         gClearSnake();
         for (int i=0;i<lenSnake;i++) gAddSnake(snake[i].x,snake[i].y,1);
         gAddSnake(foodSnake.x,foodSnake.y,2);
@@ -520,10 +494,11 @@ void snake_game() {
             - caso aperte o botão do meio:
                 - sai da função
     */
+
     if (morreu) {
       lcd.clear();
-      lcd.setCursor(2,0); lcd.print("GAME OVER");
-      lcd.setCursor(3,1); lcd.print("LEN:");
+      lcd.setCursor(3,0); lcd.print("GAME OVER!");
+      lcd.setCursor(5,1); lcd.print("LEN:");
       lcd.print(lenSnake);
       delay(1500);
     } else {
@@ -534,48 +509,35 @@ void snake_game() {
 
 void car_game() {
 
-    /*
-        - define a posição do carro, linha do obstáculo e posição do obstáculo
-    */
-    int posCarro = 0;
-    int posObstaculo = 15;
+    // define a posição do carro, linha do obstáculo e posição do obstáculo
+    int posCarro       = 0;
+    int posObstaculo   = 15;
     int linhaObstaculo = 0;
     
-    /*
-        - configuração da tela de início
-    */
+    // configuração da tela de início
     lcd.clear();
-    lcd.setCursor(0,0); lcd.print("Car run");
+    lcd.setCursor(4,0); lcd.print("Car run");
     lcd.setCursor(2,1); lcd.print("Press START");
     
     while (digitalRead(buttonSelect) != LOW);
     delay(200);
     
-    /*
-        - lógica de randomização do obstáculo
-    */
+    // lógica de randomização do obstáculo
     linhaObstaculo = random(0, 2);
 
-    /*
-        - loop principal do CAR RUN
-    */
+    // loop principal do CAR RUN
     while (true) {
 
         if (digitalRead(buttonSelect) == LOW) { delay(200); return; }
 
-        /*
-            - configuração dos controles
-        */
+        // configuração dos controles
         if (digitalRead(buttonUpperLeft) == LOW) posCarro = 0;
         if (digitalRead(buttonLowerLeft) == LOW) posCarro = 1;
 
-        /*
-            - "percurso" do obstáculo
-        */
+        // "percurso" do obstáculo
         posObstaculo--;
 
         lcd.clear();
-
         lcd.setCursor(0, posCarro);
         lcd.print(">");
 
@@ -584,25 +546,23 @@ void car_game() {
             lcd.print("#");
         }
 
-        /*
-            - colisão
-        */
+        // colisão
         if (posObstaculo == 0 && linhaObstaculo == posCarro) {
             lcd.clear();
+            lcd.setCursor(3,0);
             lcd.print("GAME OVER!");
             delay(1500);
             return;
         }
 
-        /*
-            - depois do game over, reinicializa o jogo
-        */
+        // reinicializa o jogo
         if (posObstaculo < 0) {
             posObstaculo = 15;
             linhaObstaculo = random(0, 2);
         }
 
         delay(120);
+
     }
 }
 
