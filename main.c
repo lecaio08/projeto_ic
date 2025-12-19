@@ -18,7 +18,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 uint8_t graphicRamPong[16/4][4];
 
 /*
-    - as funções são chamadas pra auxiliar o jogo PONG.
+    - as funções são chamadas pra auxiliar o jogo Pong.
     - a gClearPong() limpa tudo que estiver no painel de LCD antes do jogo começar. ref.: https://man7.org/linux/man-pages/man3/memset.3.html
     - funcionamento da gAddPong():
       - x >> 2: operação bitwise de deslocar 2 bits para a direita, o mesmo que dividir por 4, para encontrar em qual índice do array graphicRamPong a coluna x está.
@@ -67,7 +67,7 @@ uint8_t graphicRamPong[16/4][4];
 */
 void gClearPong() {
   memset(graphicRamPong, 0, sizeof(graphicRamPong));
-}
+} 
 
 void gAddPong(uint8_t x, uint8_t y, uint8_t item) {
   graphicRamPong[x >> 2][y] |= ((uint8_t)item) << ((x & 3) * 2);
@@ -91,9 +91,7 @@ void gFlushPong() {
   }
 }
 
-/*
-    - como já explicado antes, segue a mesma lógica do tipo "uint8_t graphicRamPong[16/4][4]"
-*/
+// como já explicado antes, segue a mesma lógica do tipo "uint8_t graphicRamPong[16/4][4]"
 uint8_t graphicRamSnake[4][4];
 
 /*
@@ -182,7 +180,7 @@ int escolherJogo() {
       lcd.setCursor(5,0);
       if (opcao == 1) lcd.print("PONG");
       if (opcao == 2) lcd.print("SNAKE");
-      if (opcao == 3) lcd.print("CAR GAME");
+      if (opcao == 3) lcd.print("CAR RACE");
 
       lcd.setCursor(2,1);
       lcd.print("PRESS START!");
